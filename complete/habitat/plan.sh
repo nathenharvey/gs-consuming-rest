@@ -14,7 +14,7 @@ pkg_origin=nathenharvey
 
 # Required.
 # Sets the version of the package
-pkg_version="0.1.0"
+pkg_version="0.1.1"
 
 
 # Optional.
