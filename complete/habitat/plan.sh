@@ -6,7 +6,7 @@
 # and `pkg_version` to define the fully-qualified package name, which determines
 # where the package is installed to on disk, how it is referred to in package
 # metadata, and so on.
-pkg_name=complete
+pkg_name=gs-consuming-rest
 
 # Required unless overridden by the `HAB_ORIGIN` environment variable.
 # The origin is used to denote a particular upstream of a package.
@@ -19,7 +19,7 @@ pkg_version="0.1.0"
 
 # Optional.
 # The name and email address of the package maintainer.
-pkg_maintainer="The Habitat Maintainers <humans@habitat.sh>"
+pkg_maintainer="Nathen Harvey <nharvey@chef.io>"
 
 
 # Optional.
@@ -27,13 +27,14 @@ pkg_maintainer="The Habitat Maintainers <humans@habitat.sh>"
 # Please choose a license from http://spdx.org/licenses/
 pkg_license=('Apache-2.0')
 
+pkg_scaffolding="core/scaffolding-gradle"
 
 # Optional.
 # A URL that specifies where to download the source from. Any valid wget url
 # will work. Typically, the relative path for the URL is partially constructed
 # from the pkg_name and pkg_version values; however, this convention is not
 # required.
-pkg_source="http://some_source_url/releases/${pkg_name}-${pkg_version}.tar.gz"
+# pkg_source="http://some_source_url/releases/${pkg_name}-${pkg_version}.tar.gz"
 
 
 # Optional.
@@ -48,19 +49,19 @@ pkg_source="http://some_source_url/releases/${pkg_name}-${pkg_version}.tar.gz"
 # and using the sha256sum or gsha256sum tools. Also, if you do not have
 # do_verify() overridden, and you do not have the correct sha-256 sum, then the
 # expected value will be shown in the build output of your package.
-pkg_shasum="TODO"
+# pkg_shasum="TODO"
 
 
 # Optional.
 # An array of package dependencies needed at runtime. You can refer to packages
 # at three levels of specificity: `origin/package`, `origin/package/version`, or
 # `origin/package/version/release`.
-pkg_deps=(core/glibc)
+# pkg_deps=(core/glibc)
 
 
 # Optional.
 # An array of the package dependencies needed only at build time.
-pkg_build_deps=(core/make core/gcc)
+# pkg_build_deps=(core/make core/gcc)
 
 
 # Optional.
@@ -103,9 +104,7 @@ pkg_build_deps=(core/make core/gcc)
 # in this array represent the name the value will be assigned and the values represent the toml path
 # to read the value.
 # pkg_exports=(
-#   [host]=srv.address
-#   [port]=srv.port
-#   [ssl-port]=srv.ssl.port
+#   [port]=port
 # )
 
 
@@ -113,7 +112,7 @@ pkg_build_deps=(core/make core/gcc)
 # An array of `pkg_exports` keys containing default values for which ports that this package
 # exposes. These values are used as sensible defaults for other tools. For example, when exporting
 # a package to a container format.
-# pkg_exposes=(port ssl-port)
+# pkg_exposes=(port)
 
 
 # Optional.
@@ -163,7 +162,7 @@ pkg_build_deps=(core/make core/gcc)
 
 # Required for core plans, optional otherwise.
 # The project home page for the package.
-# pkg_upstream_url="http://example.com/project-name"
+pkg_upstream_url="https://github.com/nathenharvey/gs-consuming-rest/tree/master/complete"
 
 
 # Callback Functions
@@ -187,9 +186,9 @@ pkg_build_deps=(core/make core/gcc)
 
 # There is no default implementation of this callback. You can use it to execute
 # any arbitrary commands before anything else happens.
-do_begin() {
-  return 0
-}
+# do_begin() {
+#   return 0
+# }
 
 # The default implementation is that the software specified in $pkg_source is
 # downloaded, checksum-verified, and placed in $HAB_CACHE_SRC_PATH/$pkgfilename,
@@ -198,9 +197,9 @@ do_begin() {
 # downloaded, if you are not downloading any source code at all, or if your are
 # cloning from git. If you do clone a repo from git, you must override
 # do_verify() to return 0.
-do_download() {
-  do_default_download
-}
+# do_download() {
+#   do_default_download
+# }
 
 # The default implementation tries to verify the checksum specified in the plan
 # against the computed checksum after downloading the source tarball to disk.
@@ -208,34 +207,34 @@ do_download() {
 # and a message specifying the mismatch will be printed to stderr. You should
 # not need to override this behavior unless your package does not download
 # any files.
-do_verify() {
-  do_default_verify
-}
+# do_verify() {
+#   do_default_verify
+# }
 
 # The default implementation removes the HAB_CACHE_SRC_PATH/$pkg_dirname folder
 # in case there was a previously-built version of your package installed on
 # disk. This ensures you start with a clean build environment.
-do_clean() {
-  do_default_clean
-}
+# do_clean() {
+#   do_default_clean
+# }
 
 # The default implementation extracts your tarball source file into
 # HAB_CACHE_SRC_PATH. The supported archives are: .tar, .tar.bz2, .tar.gz,
 # .tar.xz, .rar, .zip, .Z, .7z. If the file archive could not be found or was
 # not supported, then a message will be printed to stderr with additional
 # information.
-do_unpack() {
-  do_default_unpack
-}
+# do_unpack() {
+#   do_default_unpack
+# }
 
 # There is no default implementation of this callback. At this point in the
 # build process, the tarball source has been downloaded, unpacked, and the build
 # environment variables have been set, so you can use this callback to perform
 # any actions before the package starts building, such as exporting variables,
 # adding symlinks, and so on.
-do_prepare() {
-  return 0
-}
+# do_prepare() {
+#   return 0
+# }
 
 # The default implementation is to update the prefix path for the configure
 # script to use $pkg_prefix and then run make to compile the downloaded source.
@@ -243,17 +242,17 @@ do_prepare() {
 # ./configure --prefix=$pkg_prefix && make. You should override this behavior
 # if you have additional configuration changes to make or other software to
 # build and install as part of building your package.
-do_build() {
-  do_default_build
-}
+# do_build() {
+#   do_default_build
+# }
 
 # The default implementation runs nothing during post-compile. An example of a
 # command you might use in this callback is make test. To use this callback, two
 # conditions must be true. A) do_check() function has been declared, B) DO_CHECK
 # environment variable exists and set to true, env DO_CHECK=true.
-do_check() {
-  return 0
-}
+# do_check() {
+#   return 0
+# }
 
 # The default implementation is to run make install on the source files and
 # place the compiled binaries or libraries in HAB_CACHE_SRC_PATH/$pkg_dirname,
@@ -263,22 +262,22 @@ do_check() {
 # custom installation steps, such as copying files from HAB_CACHE_SRC_PATH to
 # specific directories in your package, or installing pre-built binaries into
 # your package.
-do_install() {
-  do_default_install
-}
+# do_install() {
+#   do_default_install
+# }
 
 # The default implementation is to strip any binaries in $pkg_prefix of their
 # debugging symbols. You should override this behavior if you want to change
 # how the binaries are stripped, which additional binaries located in
 # subdirectories might also need to be stripped, or whether you do not want the
 # binaries stripped at all.
-do_strip() {
-  do_default_strip
-}
+# do_strip() {
+#   do_default_strip
+# }
 
 # There is no default implementation of this callback. This is called after the
 # package has been built and installed. You can use this callback to remove any
 # temporary files or perform other post-install clean-up actions.
-do_end() {
-  return 0
-}
+# do_end() {
+#   return 0
+# }
